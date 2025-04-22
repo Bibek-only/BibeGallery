@@ -1,9 +1,10 @@
-
+import React from "react"
 
 const App = () => {
   return (
     <div>
-      Hello bibek samal
+      <div>Hello bibek samal</div>
+      <div>hello how are you</div>
     </div>
   )
 }
