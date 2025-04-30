@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ApiResponse } from "../utils/ApiResponse";
 import jwt from "jsonwebtoken";
+import prisma from "../db/prismaClient";
 
 type tokenDataPaylod = {
   id: number;
@@ -58,6 +59,28 @@ const authMiddleware = async (
             false,
             400,
             "User authentication failed because toke doesnot contain required information",
+            null,
+            null,
+          ),
+        );
+      return;
+    }
+
+    const userRes = await prisma.user.findUnique({
+      where: {
+        id: id,
+        email: email,
+      },
+    });
+
+    if (!userRes) {
+      res
+        .status(400)
+        .json(
+          new ApiResponse(
+            false,
+            400,
+            "User authentication failed because provided token is not a valid user's token",
             null,
             null,
           ),
