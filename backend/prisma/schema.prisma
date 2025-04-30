@@ -28,6 +28,7 @@ model User {
 
 model Image{
   id Int @id @default(autoincrement())
+  imageId String @unique
   imageUrl String
   tags String[]
   visibility visibility

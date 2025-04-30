@@ -1,3 +1,4 @@
 import googleAuthCallback from "./googleAuthCallback.controller";
 import imageUpload from "./uploadImage.controller";
-export { imageUpload, googleAuthCallback };
+import deleteImage from "./deleteImage.controller";
+export { imageUpload, googleAuthCallback, deleteImage };
