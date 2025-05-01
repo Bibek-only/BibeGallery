@@ -65,7 +65,7 @@ const imageUpload = async (req: Request | any, res: Response) => {
           imageId: imageUploadRes.fileId,
           imageUrl: imageUploadRes.url,
           visibility: body.visibility,
-          tags: ["tag1", "tag2"],
+          tags: ["tag"],
           user: {
             connect: {
               id: req.userId,
@@ -111,8 +111,16 @@ const imageUpload = async (req: Request | any, res: Response) => {
     } catch (error) {
       res
         .status(400)
-        .json(new ApiResponse(false, 400, "image upload failed", null, null));
-      console.log("File unlink form the local machine failed");
+        .json(
+          new ApiResponse(
+            false,
+            400,
+            "image unlin from local machine failed",
+            null,
+            null,
+          ),
+        );
+
       return;
     }
   }

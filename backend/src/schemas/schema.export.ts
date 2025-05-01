@@ -1,3 +1,3 @@
 import { imageTags, multerFileSchema } from "./imageUpload.schema";
-
-export { imageTags, multerFileSchema };
+import { deleteImageSchema } from "./deleteIMage.schema";
+export { imageTags, multerFileSchema, deleteImageSchema };

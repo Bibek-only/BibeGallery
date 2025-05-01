@@ -15,6 +15,6 @@ imageRouter.route("/upload-image").post(
   imageUpload,
 );
 
-imageRouter.route("/delete-image").delete(deleteImage);
+imageRouter.route("/delete-image").delete(authMiddleware, deleteImage);
 
 export default imageRouter;
