@@ -1,31 +1,122 @@
 import { Request, Response } from "express";
 import fs from "fs";
 import imagekit from "../configuration/imageKit.config";
-const imageUpload = async (req: Request, res: Response) => {
-  const body = req.body;
-  console.log(body);
+import { multerFileSchema, imageTags } from "../schemas/schema.export";
+import { ApiResponse } from "../utils/ApiResponse";
+
+import prisma from "../db/prismaClient";
+
+const imageUpload = async (req: Request | any, res: Response) => {
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-  const imagePath = files?.image[0].path;
-
+  let imageUploadRes: any;
   try {
-    // const fileBuffer = fs.readFileSync(imagePath);
-    // const result = await imagekit.upload({
-    //   file: fileBuffer, // use buffer for memoryStorage
-    //   fileName: files?.image[0].originalname,
-    //   folder: "bibe-gallery", // optional
-    // });
-    // console.log("here is the image upload response", result);
+    const body = req.body;
 
-    // res.status(200).json({ url: result.url });
-    res.send("image upload successfully");
-    return;
-  } catch (err) {
-    res.status(500).json({ error: "Upload failed" });
+    const imagePath = files?.image[0]?.path;
+
+    //validate the body tags
+    const validateBody = imageTags.safeParse(body);
+
+    if (!validateBody.success) {
+      res.status(400).json(
+        new ApiResponse(false, 400, "Input tags are invalid", null, {
+          error: validateBody.error,
+        }),
+      );
+      return;
+    }
+
+    //validate the file for upload
+    const validateFile = multerFileSchema.safeParse(files?.image[0]);
+    if (!validateFile.success) {
+      res.status(400).json(
+        new ApiResponse(false, 400, "Input file is invalid are invalid", null, {
+          error: validateFile.error,
+        }),
+      );
+      return;
+    }
+    const fileBuffer = fs.readFileSync(imagePath);
+
+    // upload the image in image kit
+    imageUploadRes = await imagekit.upload({
+      file: fileBuffer, // use buffer for memoryStorage
+      fileName: files?.image[0].originalname,
+      folder: "bibe-gallery", // optional
+    });
+    if (!imageUploadRes) {
+      res
+        .status(400)
+        .json(
+          new ApiResponse(
+            false,
+            400,
+            "Image uplod fail in the imgekit",
+            null,
+            null,
+          ),
+        );
+      return;
+    }
+    const dbTransaction = await prisma.$transaction(async (transaction) => {
+      //store the image in db
+      return transaction.image.create({
+        data: {
+          imageId: imageUploadRes.fileId,
+          imageUrl: imageUploadRes.url,
+          visibility: body.visibility,
+          tags: ["tag1", "tag2"],
+          user: {
+            connect: {
+              id: req.userId,
+            },
+          },
+        },
+      });
+    });
+
+    res.status(200).json(
+      new ApiResponse(
+        true,
+        200,
+        "Image uplaod sucessfully",
+        {
+          imageUrl: dbTransaction.imageUrl,
+          tags: dbTransaction.tags,
+        },
+        null,
+      ),
+    );
+  } catch (error: any) {
+    //delete the image form the cloude store
+    console.log(error);
+    if (imageUploadRes?.fileId) {
+      const deleteres = await imagekit.deleteFile(imageUploadRes.fileId);
+      res.status(400).json(
+        new ApiResponse(
+          false,
+          400,
+          "Image store in db operatin failed, image removed from cloude",
+          null,
+          {
+            error: error,
+          },
+        ),
+      );
+    }
   } finally {
-    fs.unlinkSync(files?.image[0].path); // remove the image if he upload was sucessfull or failed
+    try {
+      //remove the image from local machine
+      fs.unlinkSync(files?.image[0].path);
+    } catch (error) {
+      res
+        .status(400)
+        .json(new ApiResponse(false, 400, "image upload failed", null, null));
+      console.log("File unlink form the local machine failed");
+      return;
+    }
   }
 };
-
 export default imageUpload;
 
 // first upload the image in image kit
