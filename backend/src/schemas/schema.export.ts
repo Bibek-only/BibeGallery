@@ -1,3 +1,10 @@
+//user
 import { imageTags, multerFileSchema } from "./imageUpload.schema";
 import { deleteImageSchema } from "./deleteIMage.schema";
-export { imageTags, multerFileSchema, deleteImageSchema };
+
+//admin
+import { getUserPublicImageSchema } from "./admin/getUserPublicImage.Schema";
+
+export { imageTags, multerFileSchema, deleteImageSchema }; //user
+
+export { getUserPublicImageSchema }; //admin

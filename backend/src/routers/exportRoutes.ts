@@ -1,3 +1,4 @@
 import authRouter from "./googleAuth.route";
 import imageRouter from "./imageHandeling.route";
-export { imageRouter, authRouter };
+import adminRouter from "./admin.route";
+export { imageRouter, authRouter, adminRouter };

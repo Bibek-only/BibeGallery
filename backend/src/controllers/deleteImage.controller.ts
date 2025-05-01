@@ -49,19 +49,17 @@ const deleteImage = async (req: Request | any, res: Response) => {
 
     const deleteResClude: any = await imagekit.deleteFile(imageId);
 
-    if (deleteResClude) {
-      const deletedImage = await prisma.image.delete({
-        where: {
-          id: image.id,
-        },
-      });
+    const deletedImage = await prisma.image.delete({
+      where: {
+        id: image.id,
+      },
+    });
 
-      if (deletedImage) {
-        res
-          .status(200)
-          .json(new ApiResponse(true, 200, "Image deleted successfully"));
-        return;
-      }
+    if (deletedImage) {
+      res
+        .status(200)
+        .json(new ApiResponse(true, 200, "Image deleted successfully"));
+      return;
     }
 
     res.status(400).json(new ApiResponse(false, 400, "Image deletion failed"));
