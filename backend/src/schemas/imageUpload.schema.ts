@@ -20,6 +20,19 @@ export const multerFileSchema = z.object({
 });
 
 export const imageTags = z.object({
-  tags: z.string().min(1, "Tags are required"),
+  tags: z
+    .union([
+      z.string().array(),               // Accept array of strings
+      z.string().transform((val) => {
+        try {
+          return JSON.parse(val);
+        } catch {
+          return [val]; // fallback: single string to array
+        }
+      }),
+    ])
+    .refine((arr) => Array.isArray(arr) && arr.length > 0, {
+      message: "At least one tag is required",
+    }),
   visibility: z.enum(["PUBLIC", "PRIVATE"]),
 });

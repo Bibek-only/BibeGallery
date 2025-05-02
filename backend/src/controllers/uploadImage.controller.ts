@@ -55,6 +55,10 @@ const imageUpload = async (req: Request | any, res: Response | any) => {
           ),
         );
     }
+    let tags = body.tags;
+    if (typeof tags === "string") {
+      tags = [tags];
+    }
     const dbTransaction = await prisma.$transaction(async (transaction) => {
       //store the image in db
       return transaction.image.create({
@@ -62,7 +66,7 @@ const imageUpload = async (req: Request | any, res: Response | any) => {
           imageId: imageUploadRes.fileId,
           imageUrl: imageUploadRes.url,
           visibility: body.visibility,
-          tags: ["tag"],
+          tags: tags,
           user: {
             connect: {
               id: req.userId,
