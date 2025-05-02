@@ -7,17 +7,17 @@ const getAllImages = async (req: Request | any, res: Response | any) => {
       where: {
         visibility: "PRIVATE",
       },
-      select:{
-        imageUrl:true,
+      select: {
+        imageUrl: true,
         id: true,
-        tags:true,
-        user:{
-            select:{
-                name: true,
-                id:true
-            }
-        }
-      }
+        tags: true,
+        user: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+      },
     });
 
     if (!images) {
@@ -46,5 +46,4 @@ const getAllImages = async (req: Request | any, res: Response | any) => {
   }
 };
 
-
-export default getAllImages
+export default getAllImages;

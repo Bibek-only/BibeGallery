@@ -5,15 +5,15 @@ import {
   deleteUserPublicImages,
   deleteUserAccount,
 } from "../controllers/exportController";
-import authMiddleware from "../middlewares/authMiddleware";
+import { adminMiddleware } from "../middlewares/exportMiddleware";
 const adminRouter = Router();
 
-adminRouter.route("/get-all-images").get(authMiddleware, getAllImagesFroAdmin);
-adminRouter.route("/get-all-users").get(authMiddleware, getAllUsersFroAdmin);
+adminRouter.route("/get-all-images").get(adminMiddleware, getAllImagesFroAdmin);
+adminRouter.route("/get-all-users").get(adminMiddleware, getAllUsersFroAdmin);
 adminRouter
   .route("/delete-user-image")
-  .delete(authMiddleware, deleteUserPublicImages);
+  .delete(adminMiddleware, deleteUserPublicImages);
 adminRouter
   .route("/delete-user-account")
-  .delete(authMiddleware, deleteUserAccount);
+  .delete(adminMiddleware, deleteUserAccount);
 export default adminRouter;

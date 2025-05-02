@@ -6,7 +6,7 @@ import {
   getPublicImages,
   getSingleImageData,
   getPersonsAllImages,
-  getAllImages
+  getAllImages,
 } from "../controllers/exportController";
 import { upload, authMiddleware } from "../middlewares/exportMiddleware";
 
@@ -32,5 +32,5 @@ imageRouter
 imageRouter
   .route("/get-person-images")
   .get(authMiddleware, getPersonsAllImages);
-imageRouter.route("/get-all-images").get(authMiddleware,getAllImages);
+imageRouter.route("/get-all-images").get(authMiddleware, getAllImages);
 export default imageRouter;

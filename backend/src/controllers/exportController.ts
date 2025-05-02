@@ -22,5 +22,5 @@ export {
   getPublicImages,
   getSingleImageData,
   getPersonsAllImages,
-  getAllImages
+  getAllImages,
 };
