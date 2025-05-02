@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  getAllImages,
+  getAllImagesFroAdmin,
   getAllUsersFroAdmin,
   deleteUserPublicImages,
   deleteUserAccount,
@@ -8,7 +8,7 @@ import {
 import authMiddleware from "../middlewares/authMiddleware";
 const adminRouter = Router();
 
-adminRouter.route("/get-all-images").get(authMiddleware, getAllImages);
+adminRouter.route("/get-all-images").get(authMiddleware, getAllImagesFroAdmin);
 adminRouter.route("/get-all-users").get(authMiddleware, getAllUsersFroAdmin);
 adminRouter
   .route("/delete-user-image")

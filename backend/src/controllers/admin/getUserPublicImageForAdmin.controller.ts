@@ -2,7 +2,10 @@ import prisma from "../../db/prismaClient";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { getUserPublicImageSchema } from "../../schemas/schema.export";
 
-const getAllImages = async (req: Request | any, res: Response | any) => {
+const getAllImagesFroAdmin = async (
+  req: Request | any,
+  res: Response | any,
+) => {
   try {
     const schemaValidation = getUserPublicImageSchema.safeParse(req.query);
     if (!schemaValidation.success) {
@@ -24,6 +27,7 @@ const getAllImages = async (req: Request | any, res: Response | any) => {
     const allImages = await prisma.image.findMany({
       where: {
         userId: Number.parseInt(userId),
+        visibility: "PUBLIC",
       },
       select: {
         imageId: true,
@@ -31,6 +35,7 @@ const getAllImages = async (req: Request | any, res: Response | any) => {
         imageUrl: true,
         userId: true,
         tags: true,
+        createdAt: true,
         user: {
           select: {
             name: true,
@@ -62,7 +67,7 @@ const getAllImages = async (req: Request | any, res: Response | any) => {
   }
 };
 
-export default getAllImages;
+export default getAllImagesFroAdmin;
 
 //validate it is is admin or not in middleware
 //extract the user id from the query param
