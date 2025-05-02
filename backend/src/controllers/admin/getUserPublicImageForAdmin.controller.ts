@@ -20,12 +20,26 @@ const getAllImages = async (req: Request | any, res: Response | any) => {
       return;
     }
     const { userId } = req.query;
+
     const allImages = await prisma.image.findMany({
       where: {
-        id: Number.parseInt(userId),
-        visibility: "PUBLIC",
+        userId: Number.parseInt(userId),
+      },
+      select: {
+        imageId: true,
+        id: true,
+        imageUrl: true,
+        userId: true,
+        user: {
+          select: {
+            name: true,
+            id: true,
+            email: true,
+          },
+        },
       },
     });
+
     res.status(200).json(
       new ApiResponse(true, 200, "Successfully get user public images", {
         data: allImages,

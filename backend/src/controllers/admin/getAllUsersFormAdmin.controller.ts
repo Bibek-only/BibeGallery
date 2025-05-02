@@ -38,4 +38,4 @@ const getAllUsersForAdmin = async (req: Request | any, res: Response) => {
   }
 };
 
-export default getAllUsersForAdmin
+export default getAllUsersForAdmin;
