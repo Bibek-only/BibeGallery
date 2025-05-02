@@ -6,7 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse";
 
 import prisma from "../db/prismaClient";
 
-const imageUpload = async (req: Request | any, res: Response) => {
+const imageUpload = async (req: Request | any, res: Response | any) => {
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
   let imageUploadRes: any;
   try {
@@ -18,23 +18,21 @@ const imageUpload = async (req: Request | any, res: Response) => {
     const validateBody = imageTags.safeParse(body);
 
     if (!validateBody.success) {
-      res.status(400).json(
+      return res.status(400).json(
         new ApiResponse(false, 400, "Input tags are invalid", null, {
           error: validateBody.error,
         }),
       );
-      return;
     }
 
     //validate the file for upload
     const validateFile = multerFileSchema.safeParse(files?.image[0]);
     if (!validateFile.success) {
-      res.status(400).json(
+      return res.status(400).json(
         new ApiResponse(false, 400, "Input file is invalid are invalid", null, {
           error: validateFile.error,
         }),
       );
-      return;
     }
     const fileBuffer = fs.readFileSync(imagePath);
 
@@ -45,7 +43,7 @@ const imageUpload = async (req: Request | any, res: Response) => {
       folder: "bibe-gallery", // optional
     });
     if (!imageUploadRes) {
-      res
+      return res
         .status(400)
         .json(
           new ApiResponse(
@@ -56,7 +54,6 @@ const imageUpload = async (req: Request | any, res: Response) => {
             null,
           ),
         );
-      return;
     }
     const dbTransaction = await prisma.$transaction(async (transaction) => {
       //store the image in db
@@ -74,8 +71,12 @@ const imageUpload = async (req: Request | any, res: Response) => {
         },
       });
     });
-
-    res.status(200).json(
+    if (!dbTransaction) {
+      return res
+        .status(400)
+        .json(new ApiResponse(false, 400, "Image upload failed in the db"));
+    }
+    return res.status(200).json(
       new ApiResponse(
         true,
         200,

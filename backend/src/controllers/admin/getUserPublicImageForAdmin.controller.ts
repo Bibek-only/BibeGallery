@@ -30,6 +30,7 @@ const getAllImages = async (req: Request | any, res: Response | any) => {
         id: true,
         imageUrl: true,
         userId: true,
+        tags: true,
         user: {
           select: {
             name: true,
