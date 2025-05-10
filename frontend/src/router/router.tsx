@@ -3,7 +3,8 @@ import Home from "@/pages/Home"
 import LandingPage from "@/pages/Landing"
 import Profile from "@/pages/Profile"
 import UserGallery from "@/pages/userGallery"
-import Admin from "@/pages/Admin"
+import AdminPage from "@/pages/Admin"
+import SignInPage from "@/pages/Sign"
 
 import AdminRoute from "./admin.route"
 import IsAuthRoute from "./IsAuth.route"
@@ -13,12 +14,13 @@ const router = createBrowserRouter(
         <Route element={<App></App>} path="/">
             <Route element={<LandingPage></LandingPage>}  index />
             <Route path="/home" element={<Home></Home>} />
+            <Route path="/signin" element={<SignInPage></SignInPage>} />
             <Route element={<IsAuthRoute></IsAuthRoute>}>
             <Route path="/profile" element={<Profile></Profile>}></Route>
             <Route path="/user/:userId" element={<UserGallery></UserGallery>}></Route>
             </Route>
             <Route element={<AdminRoute></AdminRoute>}>
-                <Route path="/admin" element={<Admin></Admin>}></Route>
+                <Route path="/admin" element={<AdminPage></AdminPage>}></Route>
             </Route>
         </Route>
     )

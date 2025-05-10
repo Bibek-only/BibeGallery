@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import { Button } from "../components/ui/button"
 import { ArrowRight } from "lucide-react"
 import { getPublicImages } from "../services/mockData"
-import type { Image } from "../services/mockData"
+import type { Image } from "../services/type"
 
 
 export default function LandingPage() {
@@ -59,7 +59,7 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {images.slice(0, 8).map((image) => (
             <div key={image.imageId} className="group relative overflow-hidden rounded-lg">
-              <Link to={`/image/${image.imageId}`} className="block">
+              
                 <img
                   src={image.imageUrl || "/placeholder.svg"}
                   alt={`Image ${image.imageId}`}
@@ -79,7 +79,7 @@ export default function LandingPage() {
                     ))}
                   </div>
                 </div>
-              </Link>
+              
             </div>
           ))}
         </div>
