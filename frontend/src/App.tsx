@@ -1,11 +1,13 @@
-
-
+import {Outlet} from "react-router-dom"
+import Navbar from "./components/Navbar"
+import Footer from "./components/Footer"
 const App = () => {
   return (
-    <div>
-      <div>Hello bibek samal</div>
-      <div>hello how are you</div>
-    </div>
+    <>
+    <Navbar></Navbar>
+    <Outlet></Outlet>
+    <Footer></Footer>
+    </>
   )
 }
 
