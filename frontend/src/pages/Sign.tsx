@@ -1,13 +1,10 @@
 import { Link } from "react-router-dom"
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
+import {signInWithGoogle} from "../services/export.services"
 
 export default function SignInPage() {
-  const handleGoogleSignIn = () => {
-    // In a real app, this would handle Google authentication
-    console.log("Signing in with Google...")
-    window.location.href = "/home"
-  }
+  
 
   return (
     <div className="container mx-auto flex min-h-[calc(100vh-200px)] items-center justify-center px-4 py-12">
@@ -22,7 +19,7 @@ export default function SignInPage() {
           <CardDescription className="text-center">Sign in to your BiBe Gallery account to continue</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Button className="w-full" onClick={handleGoogleSignIn}>
+          <Button className="w-full" onClick={signInWithGoogle}>
             <svg
               className="mr-2 h-4 w-4"
               aria-hidden="true"

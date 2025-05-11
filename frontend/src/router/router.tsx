@@ -12,9 +12,9 @@ import {createBrowserRouter,createRoutesFromElements,Route,} from "react-router-
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route element={<App></App>} path="/">
-            <Route element={<LandingPage></LandingPage>}  index />
+            <Route path="" element={<LandingPage></LandingPage>}  index />
+            <Route path="/register" element={<SignInPage></SignInPage>} />
             <Route path="/home" element={<Home></Home>} />
-            <Route path="/signin" element={<SignInPage></SignInPage>} />
             <Route element={<IsAuthRoute></IsAuthRoute>}>
             <Route path="/profile" element={<Profile></Profile>}></Route>
             <Route path="/user/:userId" element={<UserGallery></UserGallery>}></Route>
