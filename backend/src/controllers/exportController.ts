@@ -10,6 +10,8 @@ import getPublicImages from "./getPublicImages.controller";
 import getSingleImageData from "./getSingleImage.controller";
 import getPersonsAllImages from "./getSinglePersonImages.controller";
 import getAllImages from "./getAllImages.controller";
+import getAuthStatus from "./getAuthStatus.controller";
+import getAdminStatus from "./getAdminStatus.controller";
 export {
   imageUpload,
   googleAuthCallback,
@@ -23,4 +25,6 @@ export {
   getSingleImageData,
   getPersonsAllImages,
   getAllImages,
+  getAuthStatus,
+  getAdminStatus
 };

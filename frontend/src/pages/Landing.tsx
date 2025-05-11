@@ -1,32 +1,35 @@
-
-
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { Button } from "../components/ui/button"
-import { ArrowRight } from "lucide-react"
-import { getPublicImages } from "../services/mockData"
-import type { Image } from "../services/type"
-
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { getPublicImages } from "../services/mockData";
+import type { Image } from "../services/type";
 
 export default function LandingPage() {
-  const [images, setImages] = useState<Image[]>([])
+  const [images, setImages] = useState<Image[]>([]);
 
   useEffect(() => {
     // Get a subset of public images for the hero section
-    const publicImages = getPublicImages().slice(0, 12)
-    setImages(publicImages)
-  }, [])
+    const publicImages = getPublicImages().slice(0, 12);
+    setImages(publicImages);
+  }, []);
 
   return (
     <div className="flex flex-col gap-16 pb-16">
-      
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 md:py-32">
         <div className="absolute inset-0 z-0 opacity-10">
           <div className="grid grid-cols-3 gap-2 md:grid-cols-4 md:gap-4 lg:grid-cols-6">
             {images.map((image, i) => (
-              <div key={i} className="aspect-square w-full overflow-hidden rounded-lg bg-muted">
-                <img src={image.imageUrl || "/placeholder.svg"} alt="" className="h-full w-full object-cover" />
+              <div
+                key={i}
+                className="aspect-square w-full overflow-hidden rounded-lg bg-muted"
+              >
+                <img
+                  src={image.imageUrl || "/placeholder.svg"}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
               </div>
             ))}
           </div>
@@ -38,8 +41,8 @@ export default function LandingPage() {
               Share Your Visual Story with the World
             </h1>
             <p className="mb-10 text-xl text-muted-foreground">
-              Upload, organize, and showcase your images in a beautiful gallery. Control who sees what with public and
-              private visibility options.
+              Upload, organize, and showcase your images in a beautiful gallery.
+              Control who sees what with public and private visibility options.
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Button size="lg" asChild>
@@ -58,28 +61,34 @@ export default function LandingPage() {
         <h2 className="mb-8 text-center text-3xl font-bold">Featured Images</h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {images.slice(0, 8).map((image) => (
-            <div key={image.imageId} className="group relative overflow-hidden rounded-lg">
-              
-                <img
-                  src={image.imageUrl || "/placeholder.svg"}
-                  alt={`Image ${image.imageId}`}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  style={{ aspectRatio: Math.random() > 0.5 ? "3/4" : "3/5" }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">By {image.user.name}</span>
-                  </div>
-                  <div className="mt-2 flex gap-2">
-                    {image.tags.map((tag:any) => (
-                      <span key={tag} className="rounded-full bg-white/20 px-2 py-1 text-xs">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
+            <div
+              key={image.imageId}
+              className="group relative overflow-hidden rounded-lg"
+            >
+              <img
+                src={image.imageUrl || "/placeholder.svg"}
+                alt={`Image ${image.imageId}`}
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                style={{ aspectRatio: Math.random() > 0.5 ? "3/4" : "3/5" }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">
+                    By {image.user.name}
+                  </span>
                 </div>
-              
+                <div className="mt-2 flex gap-2">
+                  {image.tags.map((tag: any) => (
+                    <span
+                      key={tag}
+                      className="rounded-full bg-white/20 px-2 py-1 text-xs"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -90,15 +99,20 @@ export default function LandingPage() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="mb-4 text-3xl font-bold">About BiBe Gallery</h2>
           <p className="mb-12 text-lg text-muted-foreground">
-            A simple yet powerful platform for photographers and visual artists to showcase their work and connect with
-            others.
+            A simple yet powerful platform for photographers and visual artists
+            to showcase their work and connect with others.
           </p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col items-center text-center">
             <div className="mb-4 rounded-full bg-primary-100 p-4">
-              <svg className="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="h-8 w-8 text-primary-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -109,13 +123,19 @@ export default function LandingPage() {
             </div>
             <h3 className="mb-2 text-xl font-medium">Easy Uploads</h3>
             <p className="text-muted-foreground">
-              Quickly upload your images with tags and visibility settings to organize your collection.
+              Quickly upload your images with tags and visibility settings to
+              organize your collection.
             </p>
           </div>
 
           <div className="flex flex-col items-center text-center">
             <div className="mb-4 rounded-full bg-primary-100 p-4">
-              <svg className="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="h-8 w-8 text-primary-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -126,13 +146,19 @@ export default function LandingPage() {
             </div>
             <h3 className="mb-2 text-xl font-medium">Privacy Controls</h3>
             <p className="text-muted-foreground">
-              Choose which images are public and which remain private for your eyes only.
+              Choose which images are public and which remain private for your
+              eyes only.
             </p>
           </div>
 
           <div className="flex flex-col items-center text-center">
             <div className="mb-4 rounded-full bg-primary-100 p-4">
-              <svg className="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="h-8 w-8 text-primary-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -149,13 +175,19 @@ export default function LandingPage() {
             </div>
             <h3 className="mb-2 text-xl font-medium">Beautiful Gallery</h3>
             <p className="text-muted-foreground">
-              Showcase your work in a responsive, Pinterest-inspired grid layout that adapts to any screen.
+              Showcase your work in a responsive, Pinterest-inspired grid layout
+              that adapts to any screen.
             </p>
           </div>
 
           <div className="flex flex-col items-center text-center">
             <div className="mb-4 rounded-full bg-primary-100 p-4">
-              <svg className="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                className="h-8 w-8 text-primary-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -166,7 +198,8 @@ export default function LandingPage() {
             </div>
             <h3 className="mb-2 text-xl font-medium">User Profiles</h3>
             <p className="text-muted-foreground">
-              Discover other photographers and browse their public collections for inspiration.
+              Discover other photographers and browse their public collections
+              for inspiration.
             </p>
           </div>
         </div>
@@ -179,8 +212,6 @@ export default function LandingPage() {
           </Button>
         </Link>
       </div>
-     
     </div>
-    
-  )
+  );
 }

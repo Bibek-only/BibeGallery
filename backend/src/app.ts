@@ -2,7 +2,12 @@ import express, { Request, Response } from "express";
 import { ApiResponse } from "./utils/ApiResponse";
 import "dotenv/config";
 import cors from "cors";
-import { imageRouter, authRouter, adminRouter } from "./routers/exportRoutes";
+import {
+  imageRouter,
+  authRouter,
+  adminRouter,
+  userRotuer,
+} from "./routers/exportRoutes";
 import cookieParser from "cookie-parser";
 
 import passport from "./configuration/passport.config";
@@ -22,6 +27,7 @@ app.use(
 
 app.use("/api/v1/user", imageRouter);
 app.use("/api/v1/user/auth", authRouter);
+app.use("/api/v1/user/get-auth-status", userRotuer);
 app.use("/api/v1/admin", adminRouter);
 
 app.get("/api/v1", async (req: Request, res: Response) => {

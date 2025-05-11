@@ -22,7 +22,7 @@ export const multerFileSchema = z.object({
 export const imageTags = z.object({
   tags: z
     .union([
-      z.string().array(),               // Accept array of strings
+      z.string().array(), // Accept array of strings
       z.string().transform((val) => {
         try {
           return JSON.parse(val);
