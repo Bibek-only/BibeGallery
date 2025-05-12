@@ -27,7 +27,7 @@ app.use(
 
 app.use("/api/v1/user", imageRouter);
 app.use("/api/v1/user/auth", authRouter);
-app.use("/api/v1/user/get-auth-status", userRotuer);
+app.use("/api/v1/user", userRotuer);
 app.use("/api/v1/admin", adminRouter);
 
 app.get("/api/v1", async (req: Request, res: Response) => {

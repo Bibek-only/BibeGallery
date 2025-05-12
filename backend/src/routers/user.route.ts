@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { authMiddleware,adminMiddleware } from "../middlewares/exportMiddleware";
-import { getAuthStatus } from "../controllers/exportController";
+import { getAuthStatus,getUserInfo } from "../controllers/exportController";
 const userRotuer = Router();
-userRotuer.route("/user").get(authMiddleware, getAuthStatus);
-userRotuer.route("/admin").get(authMiddleware,adminMiddleware, getAuthStatus);
+userRotuer.route("/get-auth-status/user").get(authMiddleware, getAuthStatus);
+userRotuer.route("/get-auth-status/admin").get(authMiddleware,adminMiddleware, getAuthStatus);
+userRotuer.route("/get-user-info").get(authMiddleware,getUserInfo);
 export default userRotuer;
