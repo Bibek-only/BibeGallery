@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { getPublicImages } from "../services/mockData";
 import type { Image } from "../services/type";
-import Hero from "@/components/HomePage/Hero";
-import About from "@/components/HomePage/About";
-import FeturedImages from "@/components/HomePage/FeturedImages";
+import Hero from "@/components/LandingPage/Hero";
+import About from "@/components/LandingPage/About";
+import FeturedImages from "@/components/LandingPage/FeturedImages";
 import { useSelector, UseSelector } from "react-redux";
 
 import Loader from "@/components/Loader";
@@ -20,8 +20,8 @@ export default function LandingPage() {
   }, []);
 
   //state to set for the loader
-  const {isLoading} = useSelector((state:any)=> state.loadingReducer)
-  
+  const { isLoading } = useSelector((state: any) => state.loadingReducer);
+
   return (
     <div className="flex flex-col gap-16 pb-16">
       {/* Hero Section */}

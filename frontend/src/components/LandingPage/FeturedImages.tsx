@@ -1,26 +1,20 @@
-import type { Image } from "../../services/type";
-import { useState,useEffect } from "react";
-import { getPublicImages } from "../../services/mockData";
+import { useSelector } from "react-redux";
 
 const FeturedImages = () => {
-    const [images, setImages] = useState<Image[]>([]);
-    useEffect(() => {
-            // Get a subset of public images for the hero section
-            const publicImages = getPublicImages().slice(0, 12);
-            setImages(publicImages);
-          }, []);
+  const {publicImages} = useSelector((state:any)=>state.imageReducer)
+  const images:any = publicImages.slice(0,12);
   return (
     <section className="container mx-auto px-4 py-16">
         <h2 className="mb-8 text-center text-3xl font-bold">Featured Images</h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {images.slice(0, 8).map((image) => (
+          {images.slice(0, 8).map((image:any) => (
             <div
-              key={image.imageId}
+              key={image.id}
               className="group relative overflow-hidden rounded-lg"
             >
               <img
                 src={image.imageUrl || "/placeholder.svg"}
-                alt={`Image ${image.imageId}`}
+                alt={`Image ${image.id}`}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 style={{ aspectRatio: Math.random() > 0.5 ? "3/4" : "3/5" }}
               />
