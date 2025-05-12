@@ -4,6 +4,7 @@ import { Button } from "../components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { getPublicImages } from "../services/mockData";
 import type { Image } from "../services/type";
+import Loader from "@/components/Loader";
 
 export default function LandingPage() {
   const [images, setImages] = useState<Image[]>([]);
@@ -17,6 +18,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col gap-16 pb-16">
       {/* Hero Section */}
+      <Loader isLoading={false} message="Loading gallery..." />
       <section className="relative overflow-hidden py-20 md:py-32">
         <div className="absolute inset-0 z-0 opacity-10">
           <div className="grid grid-cols-3 gap-2 md:grid-cols-4 md:gap-4 lg:grid-cols-6">

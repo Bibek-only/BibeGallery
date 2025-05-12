@@ -5,7 +5,7 @@ import Profile from "@/pages/Profile"
 import UserGallery from "@/pages/userGallery"
 import AdminPage from "@/pages/Admin"
 import SignInPage from "@/pages/Sign"
-
+import NotFoundPage from "@/pages/NotFound"
 import AdminRoute from "./admin.route"
 import IsAuthRoute from "./IsAuth.route"
 import {createBrowserRouter,createRoutesFromElements,Route,} from "react-router-dom"
@@ -22,6 +22,7 @@ const router = createBrowserRouter(
             <Route element={<AdminRoute></AdminRoute>}>
                 <Route path="/admin" element={<AdminPage></AdminPage>}></Route>
             </Route>
+            <Route path="/*" element={<NotFoundPage></NotFoundPage>}></Route>
         </Route>
     )
 )

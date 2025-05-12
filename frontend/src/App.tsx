@@ -3,16 +3,21 @@ import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
 import { useEffect } from "react"
 import {userAuthStatusCheck,userAdminStatusCheck} from "./services/export.services"
-const App = () => {
+import { useDispatch } from "react-redux"
+import {setAdminAuthStatus,setUserAuthStatus} from "./store/reducers/auth/authStatusSlice"
 
+const App = () => {
+  const dispatch = useDispatch();
   //check the auth status here
   useEffect(()=>{
-
+    
     userAuthStatusCheck()
     .then((data)=>{
       console.log("her is the data for user check",data);
 
-      // store the status in the store for admin
+      if(data.success){
+        dispatch(setUserAuthStatus(true));
+      }
     })
     .catch((err)=>{
       console.log(err);
@@ -21,11 +26,15 @@ const App = () => {
     userAdminStatusCheck()
     .then((data)=>{
       console.log("here is the data for admin check",data);
-      // store the status in the store for admin
+      if(data.success){
+        dispatch(setAdminAuthStatus(true));
+      }
     })
     .catch((err:any)=>{
       console.log(err)
     })
+
+    
 
 
   },[]);

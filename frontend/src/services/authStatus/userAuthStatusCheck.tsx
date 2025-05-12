@@ -6,7 +6,7 @@ const userAuthStatusCheck = async () => {
       withCredentials: true,
     });
     
-    console.log("xx",userAuthStatusCheck)
+    
     
     if(userAuthStatusRes.data?.success){
         return {

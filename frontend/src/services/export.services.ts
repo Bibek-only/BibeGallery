@@ -1,6 +1,6 @@
-import userAuthStatusCheck from "./userAuthStatusCheck";
-import userAdminStatusCheck from "./userAdminStatusCheck";
-import signInWithGoogle from "./userAuth.service";
+import userAuthStatusCheck from "./authStatus/userAuthStatusCheck";
+import userAdminStatusCheck from "./authStatus/userAdminStatusCheck";
+import signInWithGoogle from "./userAuth/userAuth.service";
 export {
     userAuthStatusCheck,
     userAdminStatusCheck,
