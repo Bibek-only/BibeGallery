@@ -12,7 +12,7 @@ export default function SignInPage() {
         <CardHeader className="space-y-1">
           <div className="flex justify-center">
             <div className="h-20 w-20 rounded-full bg-primary-100 flex items-center justify-center mb-4">
-              <span className="text-2xl font-bold text-primary-600">BiBe</span>
+              <span className="text-2xl font-bold text-primary-600">Bibeblog</span>
             </div>
           </div>
           <CardTitle className="text-center text-2xl">Sign in</CardTitle>
@@ -41,9 +41,10 @@ export default function SignInPage() {
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <Link to="/signup" className="text-primary-600 underline-offset-4 hover:underline">
-              Sign up
-            </Link>
+            
+            <button className="text-primary-600 underline-offset-4 hover:underline" onClick={()=>{
+              signInWithGoogle();
+            }}>sign up</button>
           </div>
         </CardFooter>
       </Card>
