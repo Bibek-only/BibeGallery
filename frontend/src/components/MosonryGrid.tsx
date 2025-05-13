@@ -77,28 +77,28 @@ export default function MasonryGrid({ images, onImageClick, onUserClick }: Mason
         <div key={columnIndex} className="flex flex-col gap-4">
           {column.map((image) => (
             <div key={image.imageId} className="group relative overflow-hidden rounded-lg">
-              <Link
-                to={`/image/${image.imageId}`}
+              <div
+                
                 className="block w-full"
-                onClick={(e) => handleImageClick(e, image.imageId)}
+                onClick={(e) => handleImageClick(e, image.id.toString())}
               >
                 <img
                   src={image.imageUrl || "/placeholder.svg"}
-                  alt={`Image ${image.imageId}`}
+                  alt={`Image ${image.id}`}
                   className="w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <div
                   className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  onClick={(e) => handleUserClick(e, image.userId)}
+                  onClick={(e) => handleUserClick(e, image.user.id)}
                 >
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4" />
                     <span className="text-sm font-medium cursor-pointer hover:underline">{image.user.name}</span>
                   </div>
                 </div>
-              </Link>
+              </div>
             </div>
           ))}
         </div>

@@ -5,26 +5,25 @@ import MobileView from "./NavBar/MobileView";
 import PcView from "./NavBar/PcView";
 import TagFilter from "./TagFilter";
 import { Input } from "./ui/input";
-
-// Mock user data - would come from auth context in a real app
-const user = {
-  name: "John Doe",
-  image: "/placeholder.svg?height=40&width=40",
-};
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setSearchQuery,
+  toggleTagInQuery,
+} from "../store/reducers/image/imageSlice";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
   const location = useLocation();
   const navigate = useNavigate();
   const isLandingPage = location.pathname === "/";
   const showSearch = !isLandingPage;
 
-  //own code
-
-  const [isLogedin, setisLogedin] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true);
+  //search state
+  const dispatch = useDispatch();
+  const { searchQuery, tagQuery } = useSelector(
+    (state: any) => state.imageReducer
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,9 +34,8 @@ export default function Navbar() {
   }, []);
 
   const handleTagSelect = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
+    // Use the toggleTagInQuery action to handle both adding and removing tags
+    dispatch(toggleTagInQuery(tag));
   };
 
   const handleSignOut = () => {
@@ -70,7 +68,7 @@ export default function Navbar() {
                 placeholder="Search images..."
                 className="pl-8"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => dispatch(setSearchQuery(e.target.value))}
               />
             </div>
           </div>
@@ -84,10 +82,7 @@ export default function Navbar() {
 
       {showSearch && (
         <div className="container mx-auto overflow-hidden pb-2 px-4">
-          <TagFilter
-            selectedTags={selectedTags}
-            onTagSelect={handleTagSelect}
-          />
+          <TagFilter selectedTags={tagQuery} onTagSelect={handleTagSelect} />
         </div>
       )}
     </header>
