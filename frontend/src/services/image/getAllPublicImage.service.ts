@@ -1,14 +1,12 @@
 import { API } from "@/API";
 import axios from "axios";
-const getPublicImages = async () => {
+const getAllPublicImages = async () => {
   try {
-    const response = await axios.get(`${API}/user/get-public-images`, {
-      withCredentials: true,
-    });
+    const response = await axios.get(`${API}/user/get-all-public-images`);
     if (response.data.success) {
       return {
         success: true,
-        data: response.data.data.publicImages,
+        data: response.data.data,
         message: response.data.message,
       };
     }
@@ -28,4 +26,4 @@ const getPublicImages = async () => {
   }
 };
 
-export default getPublicImages;
+export default getAllPublicImages;

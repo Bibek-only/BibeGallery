@@ -8,7 +8,7 @@ import {setUserInformation} from "./store/reducers/user/userSlice"
 import {setPublicImages} from "./store/reducers/image/imageSlice"
 import { useDispatch,useSelector } from "react-redux"
 import {setAdminAuthStatus,setUserAuthStatus} from "./store/reducers/auth/authStatusSlice"
-import {getPublicImages} from "./services/export.services"
+import {getAllPublicImages} from "./services/export.services"
 const App = () => {
   const dispatch = useDispatch();
 
@@ -16,6 +16,8 @@ const App = () => {
   const {userInfo} = useSelector((state:any)=> state.userReducer)
   const {publicImages} = useSelector((state:any)=> state.imageReducer)
 
+  //get the auth auth status of the user
+  const {isLogedIn} = useSelector((state:any)=> state.authReducer)
 
   //check the auth status here
   useEffect(()=>{
@@ -46,7 +48,7 @@ const App = () => {
     
     
     //get the user info if ther is nothing
-    if(!userInfo.id){
+    if(!userInfo.id && isLogedIn){
       getUserInof()
       .then((data)=>{
         if(data.success){
@@ -68,9 +70,9 @@ const App = () => {
 
     //get public images if there was nothing
     if(publicImages.length == 0){
-      getPublicImages()
+      getAllPublicImages()
       .then((data:any)=>{
-        console.log("pb image",data.data)
+        console.log("pb image",data)
         dispatch(setPublicImages(data.data))
       })
       .catch((error:any)=>{

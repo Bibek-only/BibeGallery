@@ -1,6 +1,5 @@
 import { LogOut } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import {
@@ -10,18 +9,68 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useSelector } from "react-redux";
-
-
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../services/export.services";
+import {
+  setUserInformation,
+  setUserGallery,
+} from "../../store/reducers/user/userSlice";
+import {
+  setAdminAuthStatus,
+  setUserAuthStatus,
+} from "../../store/reducers/auth/authStatusSlice";
+import { setLoadingState } from "../../store/reducers/Loader/loadingStatus";
 const PcView = () => {
   //own code
-  
-  const {isLogedIn,isAdmin} = useSelector((state:any)=>state.authReducer);
-  
-  const {userInfo} = useSelector((state:any)=> state.userReducer)
-  function handelSignout() {}
+
+  const { isLogedIn, isAdmin } = useSelector((state: any) => state.authReducer);
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state: any) => state.userReducer);
+  const dispatch = useDispatch();
+  function handelSignout() {
+    logout()
+      .then((data) => {
+        //show the loader
+        dispatch(setLoadingState(true));
+        if (data.success) {
+          //show the toast
+
+          //clear the user loging status
+          dispatch(setAdminAuthStatus(false));
+          dispatch(setUserAuthStatus(false));
+          //clear the user info from store
+          dispatch(
+            setUserInformation({
+              id: "",
+              name: "",
+              email: "",
+              profileImageUrl: "",
+              creaetAt: "",
+            })
+          );
+
+          //clear the user gallery
+          dispatch(
+            setUserGallery({
+              publicImageCount: 0,
+              userPublicImages: [],
+              privateImageCoutn: 0,
+              userPrivateImages: [],
+            })
+          );
+
+          // stop the loader
+          dispatch(setLoadingState(false));
+          //navigate to the home
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        console.log("Error in logout", err);
+      });
+
+    dispatch(setLoadingState(false));
+  }
 
   return (
     <div className="hidden md:flex">
@@ -37,7 +86,7 @@ const PcView = () => {
                 <AvatarFallback>
                   {userInfo.name
                     .split(" ")
-                    .map((n:any) => n[0])
+                    .map((n: any) => n[0])
                     .join("")}
                 </AvatarFallback>
               </Avatar>

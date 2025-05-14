@@ -10,7 +10,7 @@ const Hero = () => {
 
   return (
     <section className="relative overflow-hidden py-20 md:py-32">
-      <div className="absolute inset-0 z-0 opacity-10">
+      <div className="absolute inset-0 z-0 opacity-20">
         <div className="grid grid-cols-3 gap-2 md:grid-cols-4 md:gap-4 lg:grid-cols-6">
           {images.map((image:any) => (
             <div
