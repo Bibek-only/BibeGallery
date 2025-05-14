@@ -20,6 +20,7 @@ const googleAuthCallback = (req: any, res: any) => {
     sameSite: "None",
     secure: true,
     maxAge: 3 * 24 * 60 * 60 * 1000,
+    path: "/",
   });
 
   res.redirect(`${process.env.FRONTEND_URL}/home`); //after successfyll setthe cookie send the user to frontend url

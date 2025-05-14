@@ -13,6 +13,7 @@ import getAllImages from "./getAllImages.controller";
 import getAuthStatus from "./getAuthStatus.controller";
 import getAdminStatus from "./getAdminStatus.controller";
 import getUserInfo from "./getUserInfo.controller";
+import logout from "./logout.controller";
 
 export {
   imageUpload,
@@ -29,5 +30,6 @@ export {
   getAllImages,
   getAuthStatus,
   getAdminStatus,
-  getUserInfo
+  getUserInfo,
+  logout,
 };
