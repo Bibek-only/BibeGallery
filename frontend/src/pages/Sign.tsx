@@ -1,12 +1,39 @@
-import { Link } from "react-router-dom"
+
+import { useEffect } from "react"
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
 import {signInWithGoogle} from "../services/export.services"
+import { useSelector,useDispatch } from "react-redux"
+import {setLoadingState} from "../store/reducers/Loader/loadingStatus"
+import Loader from "@/components/Loader"
+import { useNavigate } from "react-router-dom"
 
 export default function SignInPage() {
-  
 
-  return (
+  async function delay(){
+    await new Promise((res)=>{
+      setTimeout(() => {
+        res("resolved")
+      }, 1000);
+    })
+  }
+      
+  const dispatch = useDispatch();
+  const {isLogedIn} = useSelector((state:any)=> state.authReducer)
+  const {isLoading} = useSelector((state:any)=> state.loadingReducer)
+  const navigate = useNavigate();
+  
+  useEffect(()=>{
+    dispatch(setLoadingState(true));
+    (async()=>{
+      await delay();
+      dispatch(setLoadingState(false));
+      isLogedIn?navigate(-1):null
+    })();
+
+  },[])
+
+  return isLoading?(<Loader isLoading={isLoading} message="Loading....."></Loader>):(
     <div className="container mx-auto flex min-h-[calc(100vh-200px)] items-center justify-center px-4 py-12">
       <Card className="mx-auto w-full max-w-md">
         <CardHeader className="space-y-1">

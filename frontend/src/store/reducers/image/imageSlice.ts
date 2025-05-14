@@ -1,13 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface ImageState {
-  publicImages: string[];
+  publicImages:any;
   searchQuery: string;
   tagQuery: string[];
 }
 
 const initialState: ImageState = {
-  publicImages: [],
+  publicImages: [{
+    id: 9,
+    imageUrl: "https://ik.imagekit.io/Bibekabcsik09/bibe-gallery/hotel_C8bTMvrymq.jpg",
+    tags: [
+        "tag"
+    ],
+    userId: 12,
+    user: {
+        name: "Bibek samal"
+    }
+}],
   searchQuery: "",
   tagQuery: [],
 };

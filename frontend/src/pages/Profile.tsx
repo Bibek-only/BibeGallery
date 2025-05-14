@@ -1,105 +1,74 @@
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
-import { Button } from "../components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog"
-import { Upload, Trash2 } from "lucide-react"
-import { getUserImages } from "../services/mockData"
-import type { Image } from "../services/type"
-import MasonryGrid from "../components/MosonryGrid"
-import ImageModal from "../components/ImageModal"
-import UploadForm from "../components/UploadForm"
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
 
-// Mock user data
-const user = {
-  id: 1,
-  name: "John Doe",
-  email: "john@example.com",
-  profileImageUrl: "/placeholder.svg?height=100&width=100",
-  imageCount: 15,
-}
+import SideBar from "@/components/ProfilePage/SideBar";
+import MasonryGrid from "../components/MosonryGrid";
+
+import { useDispatch, useSelector } from "react-redux";
+import { getUserPrivateImages, getUserPublicIMages } from "../services/export.services";
+import {
+  setUserPrivateImages,
+  setUserPublicImages,
+} from "../store/reducers/user/userSlice";
+import {
+ setLoadingState
+} from "../store/reducers/Loader/loadingStatus";
+import Loader from "@/components/Loader";
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState<"PUBLIC" | "PRIVATE">("PUBLIC")
-  const [images, setImages] = useState<Image[]>([])
-  const [selectedImage, setSelectedImage] = useState<Image | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isUploadOpen, setIsUploadOpen] = useState(false)
-  const navigate = useNavigate()
+  const [activeTab, setActiveTab] = useState<"PUBLIC" | "PRIVATE">("PUBLIC");
+
+  
+  const { userPublicImages, userPrivateImages } = useSelector(
+    (state: any) => state.userReducer
+  );
+  const { isLoading } = useSelector((state: any) => state.loadingReducer);
+  const dispatch = useDispatch();
+
+
+
 
   useEffect(() => {
-    const userImages = getUserImages(user.id, activeTab)
-    setImages(userImages)
-  }, [activeTab])
+    //get the public images
+    (async () => {
+      if (userPublicImages.length == 0) {
+        dispatch(setLoadingState(true));
+        const res = await getUserPublicIMages();
+        if (res.success) {
+          //set the data to the store
+          dispatch(setUserPublicImages(res.data));
+          console.log("her are the data to store pubic images", res.data);
+        }
+      }
+      //get the private images
+      if(userPrivateImages.length == 0){
+        dispatch(setLoadingState(true));
+        const res = await getUserPrivateImages();
+        if (res.success) {
+          //set the data to the store
+          dispatch(setUserPrivateImages(res.data));
+          console.log("her are the data to store private images", res.data);
+        }
+      }
 
-  const handleImageClick = (imageId: string) => {
-    const image = images.find((img) => img.imageId === imageId)
-    if (image) {
-      setSelectedImage(image)
-      setIsModalOpen(true)
-    }
-  }
+      dispatch(setLoadingState(false))
 
-  const handleUserClick = (userId: number) => {
-    navigate(`/user/${userId}`)
-  }
+    })();
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Loader isLoading={isLoading} message="Loading the images...."></Loader>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
         {/* Sidebar */}
-        <div className="md:col-span-1">
-          <div className="space-y-6 rounded-lg border p-6">
-            <div className="flex flex-col items-center space-y-4">
-              <Avatar className="h-24 w-24">
-                <AvatarImage src={user.profileImageUrl || "/placeholder.svg"} alt={user.name} />
-                <AvatarFallback>
-                  {user.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </AvatarFallback>
-              </Avatar>
-              <div className="text-center">
-                <h3 className="text-xl font-bold">{user.name}</h3>
-                <p className="text-sm text-muted-foreground">{user.email}</p>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Images</span>
-                <span className="font-medium">{images.length}</span>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
-                <DialogTrigger asChild>
-                  <Button className="w-full gap-2">
-                    <Upload className="h-4 w-4" />
-                    Upload Image
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[500px]">
-                  <DialogHeader>
-                    <DialogTitle>Upload a new image</DialogTitle>
-                  </DialogHeader>
-                  <UploadForm onSuccess={() => setIsUploadOpen(false)} />
-                </DialogContent>
-              </Dialog>
-
-              <Button
-                variant="outline"
-                className="w-full gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive"
-              >
-                <Trash2 className="h-4 w-4" />
-                Delete Account
-              </Button>
-            </div>
-          </div>
-        </div>
+        <SideBar></SideBar>
 
         {/* Main Content */}
         <div className="md:col-span-3">
@@ -107,7 +76,9 @@ export default function ProfilePage() {
 
           <Tabs
             defaultValue={activeTab}
-            onValueChange={(value:any) => setActiveTab(value as "PUBLIC" | "PRIVATE")}
+            onValueChange={(value: any) =>
+              setActiveTab(value as "PUBLIC" | "PRIVATE")
+            }
             className="w-full"
           >
             <TabsList className="grid w-full grid-cols-2 mb-6">
@@ -116,23 +87,43 @@ export default function ProfilePage() {
             </TabsList>
 
             <TabsContent value="PUBLIC" className="mt-0">
-              {images.length > 0 ? (
-                <MasonryGrid images={images} onImageClick={handleImageClick} onUserClick={handleUserClick} />
+              {userPublicImages.length > 0 ? (
+                <MasonryGrid
+                  images={userPublicImages}
+                  onImageClick={()=>{}}
+                  onUserClick={()=>{}}
+                />
               ) : (
                 <div className="flex flex-col items-center justify-center py-12">
-                  <p className="mb-4 text-lg text-muted-foreground">You don't have any public images yet.</p>
-                  <Button onClick={() => setIsUploadOpen(true)}>Upload Your First Image</Button>
+                  <p className="mb-4 text-lg text-muted-foreground">
+                    You don't have any public images yet.
+                  </p>
+                  <Button onClick={()=>{
+                    //opent the upload form here
+                  }}>
+                    Upload Your First Image
+                  </Button>
                 </div>
               )}
             </TabsContent>
 
             <TabsContent value="PRIVATE" className="mt-0">
-              {images.length > 0 ? (
-                <MasonryGrid images={images} onImageClick={handleImageClick} onUserClick={handleUserClick} />
+              {userPrivateImages.length > 0 ? (
+                <MasonryGrid
+                  images={userPrivateImages}
+                  onImageClick={()=>{}}
+                  onUserClick={()=>{}}
+                />
               ) : (
                 <div className="flex flex-col items-center justify-center py-12">
-                  <p className="mb-4 text-lg text-muted-foreground">You don't have any private images yet.</p>
-                  <Button onClick={() => setIsUploadOpen(true)}>Upload Your First Image</Button>
+                  <p className="mb-4 text-lg text-muted-foreground">
+                    You don't have any private images yet.
+                  </p>
+                  <Button onClick={() =>{
+                    // open the upload form
+                  }}>
+                    Upload Your First Image
+                  </Button>
                 </div>
               )}
             </TabsContent>
@@ -140,7 +131,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <ImageModal image={selectedImage} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      
     </div>
-  )
+  );
 }

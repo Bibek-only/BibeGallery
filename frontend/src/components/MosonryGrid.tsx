@@ -1,9 +1,7 @@
-"use client"
-
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { Link } from "react-router-dom"
+
 import { User } from "lucide-react"
 import type { Image as ImageType } from "../services/type"
 
@@ -76,7 +74,7 @@ export default function MasonryGrid({ images, onImageClick, onUserClick }: Mason
       {columnImages.map((column, columnIndex) => (
         <div key={columnIndex} className="flex flex-col gap-4">
           {column.map((image) => (
-            <div key={image.imageId} className="group relative overflow-hidden rounded-lg">
+            <div key={image.id} className="group relative overflow-hidden rounded-lg">
               <div
                 
                 className="block w-full"
@@ -91,11 +89,11 @@ export default function MasonryGrid({ images, onImageClick, onUserClick }: Mason
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <div
                   className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  onClick={(e) => handleUserClick(e, image.user.id)}
+                  onClick={(e) => handleUserClick(e, image.userId)}
                 >
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4" />
-                    <span className="text-sm font-medium cursor-pointer hover:underline">{image.user.name}</span>
+                    <span className="text-sm font-medium cursor-pointer hover:underline">{image?.user?.name || ""}</span>
                   </div>
                 </div>
               </div>

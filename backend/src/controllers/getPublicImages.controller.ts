@@ -13,11 +13,10 @@ const getPublicImages = async (req: Request | any, res: Response | any) => {
         id: true,
         imageUrl: true,
         tags: true,
+        userId: true,
         user: {
           select: {
             name: true,
-            id: true,
-            email: true,
           },
         },
       },
@@ -29,17 +28,17 @@ const getPublicImages = async (req: Request | any, res: Response | any) => {
         .json(new ApiResponse(false, 400, "Can't get the user public iamges"));
     }
 
-    return res.status(200).json(
-      new ApiResponse(
-        true,
-        200,
-        "Successfully get the user public iamges",
-        {
-          publicImages: publicImages,
-        },
-        null,
-      ),
-    );
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          true,
+          200,
+          "Successfully get the user public iamges",
+          publicImages,
+          null,
+        ),
+      );
   } catch (error: any) {
     return res.status(400).json(
       new ApiResponse(

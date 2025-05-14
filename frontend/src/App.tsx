@@ -35,6 +35,7 @@ const App = () => {
       console.log(err);
     })
 
+    dispatch(setLoadingState(true))
     userAdminStatusCheck()
     .then((data)=>{
       console.log("here is the data for admin check",data);
@@ -48,7 +49,9 @@ const App = () => {
     
     
     //get the user info if ther is nothing
-    if(!userInfo.id && isLogedIn){
+   
+    if(!userInfo.id){
+      dispatch(setLoadingState(true))
       getUserInof()
       .then((data)=>{
         if(data.success){
@@ -58,6 +61,7 @@ const App = () => {
             email: data.data.email,
             profileImageUrl: data.data.profileImageUrl,
             creaetAt: data.data.createdAt,
+            imageCount: data.data?._count?.images || 0
           }))
         }
         
@@ -69,7 +73,8 @@ const App = () => {
     }
 
     //get public images if there was nothing
-    if(publicImages.length == 0){
+    if(publicImages.length <=1 ){
+      dispatch(setLoadingState(true))
       getAllPublicImages()
       .then((data:any)=>{
         console.log("pb image",data)

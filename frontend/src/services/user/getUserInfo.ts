@@ -6,7 +6,7 @@ const getUserInof = async () => {
         const userData = await axios.get(`${API}/user/get-user-info`,{
             withCredentials: true
         });
-
+        
         if(userData.data.success){
             return{
                 success:true,

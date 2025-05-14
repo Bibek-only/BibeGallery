@@ -14,6 +14,15 @@ const getUserInfo = async (req: Request | any, res: Response | any) => {
         email: true,
         profileImageUrl: true,
         createdAt: true,
+        _count: {
+          select: {
+            images: {
+              where: {
+                userId: req.userId,
+              },
+            },
+          },
+        },
       },
     });
 

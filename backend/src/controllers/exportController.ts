@@ -32,5 +32,5 @@ export {
   getAdminStatus,
   getUserInfo,
   logout,
-  getAllPublicImages
+  getAllPublicImages,
 };

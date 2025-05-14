@@ -7,15 +7,10 @@ const initialState = {
     email: "",
     profileImageUrl: "",
     creaetAt: "",
+    imageCount:0
   },
-  userGallery:{
-    
-    publicImageCount:0,
-    userPublicImages:[],
-    privateImageCoutn:0,
-    userPrivateImages:[],
-    
-  }
+  userPublicImages:[],
+  userPrivateImages:[]
 };
 
 const userSlice = createSlice({
@@ -25,11 +20,14 @@ const userSlice = createSlice({
     setUserInformation: (state, action) => {
       state.userInfo = action.payload;
     },
-    setUserGallery:(state,action)=>{
-      state.userGallery = action.payload;
+    setUserPublicImages:(state,action) => {
+      state.userPublicImages = action.payload
+    },
+    setUserPrivateImages:(state,action) => {
+      state.userPrivateImages = action.payload
     }
   },
 });
 
-export const { setUserInformation,setUserGallery } = userSlice.actions;
+export const { setUserInformation,setUserPrivateImages,setUserPublicImages} = userSlice.actions;
 export default userSlice.reducer;

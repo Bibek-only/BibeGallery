@@ -13,11 +13,10 @@ const getPrivateImages = async (req: Request | any, res: Response | any) => {
         id: true,
         imageUrl: true,
         tags: true,
+        userId: true,
         user: {
           select: {
             name: true,
-            id: true,
-            email: true,
           },
         },
       },
@@ -34,9 +33,7 @@ const getPrivateImages = async (req: Request | any, res: Response | any) => {
         true,
         200,
         "Successfully get the user private iamges",
-        {
-          privateImages: privateImages,
-        },
+        privateImages,
         null,
       ),
     );

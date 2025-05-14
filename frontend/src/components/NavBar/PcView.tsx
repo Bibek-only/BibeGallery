@@ -13,7 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../services/export.services";
 import {
   setUserInformation,
-  setUserGallery,
+  setUserPrivateImages,
+  setUserPublicImages
 } from "../../store/reducers/user/userSlice";
 import {
   setAdminAuthStatus,
@@ -51,12 +52,10 @@ const PcView = () => {
 
           //clear the user gallery
           dispatch(
-            setUserGallery({
-              publicImageCount: 0,
-              userPublicImages: [],
-              privateImageCoutn: 0,
-              userPrivateImages: [],
-            })
+            setUserPrivateImages([])
+          );
+          dispatch(
+            setUserPublicImages([])
           );
 
           // stop the loader
