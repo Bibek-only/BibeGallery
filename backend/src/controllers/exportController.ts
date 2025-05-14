@@ -14,7 +14,7 @@ import getAuthStatus from "./getAuthStatus.controller";
 import getAdminStatus from "./getAdminStatus.controller";
 import getUserInfo from "./getUserInfo.controller";
 import logout from "./logout.controller";
-
+import getAllPublicImages from "./getAllPublicImages.controller";
 export {
   imageUpload,
   googleAuthCallback,
@@ -32,4 +32,5 @@ export {
   getAdminStatus,
   getUserInfo,
   logout,
+  getAllPublicImages
 };

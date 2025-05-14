@@ -15,7 +15,7 @@ const logout = async (req: Request | any, res: Response | any) => {
     console.log("error in the logout catch", error);
     return res
       .status(400)
-      .json(new ApiResponse(false, 400, error?.message || "Logout failed"));
+      .json(new ApiResponse(false, 400, error?.message || "Logout failed in catch"));
   }
 };
 
