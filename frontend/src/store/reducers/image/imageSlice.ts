@@ -1,23 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface ImageState {
-  publicImages:any;
+  publicImages: any;
+  specificPersonData: any;
   searchQuery: string;
   tagQuery: string[];
 }
 
 const initialState: ImageState = {
-  publicImages: [{
-    id: 9,
-    imageUrl: "https://ik.imagekit.io/Bibekabcsik09/bibe-gallery/hotel_C8bTMvrymq.jpg",
-    tags: [
-        "tag"
+  publicImages: [
+    {
+      id: 9,
+      imageUrl:
+        "https://ik.imagekit.io/Bibekabcsik09/bibe-gallery/hotel_C8bTMvrymq.jpg",
+      tags: ["tag"],
+      userId: 12,
+      user: {
+        name: "Bibek samal",
+      },
+    },
+  ],
+  specificPersonData:{
+    name:"",
+    profileImageUrl:"",
+    images:[
+      {
+        id: 0,
+        imageUrl: "",
+        tags: ["tag"],
+        userId: 0,
+        user: {
+          name: "",
+        },
+      },
     ],
-    userId: 12,
-    user: {
-        name: "Bibek samal"
-    }
-}],
+  },
   searchQuery: "",
   tagQuery: [],
 };
@@ -29,11 +46,13 @@ const imageSlice = createSlice({
     setPublicImages: (state, action) => {
       state.publicImages = action.payload;
     },
+    setSpecificPersonData:(state,action)=>{
+      state.specificPersonData = action.payload;
+    },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
     setTagQuery: (state, action) => {
-      
       state.tagQuery = action.payload;
     },
     addTagToQuery: (state, action) => {
@@ -64,6 +83,7 @@ export const {
   addTagToQuery,
   removeTagFromQuery,
   toggleTagInQuery,
+  setSpecificPersonData
 } = imageSlice.actions;
 
 export default imageSlice.reducer;

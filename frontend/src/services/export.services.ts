@@ -7,6 +7,7 @@ import logout from "./userAuth/userLogout.service";
 import getUserPublicIMages from "./image/getUserPublicImages.service";
 import getUserPrivateImages from "./image/getUserPrivateImages.service"
 import filterImageFunction from "./image/filterImage.service";
+import getSpecificPersonPublicImages from "./image/getSpecificPersonPubilcImages";
 export {
     userAuthStatusCheck,
     userAdminStatusCheck,
@@ -16,5 +17,6 @@ export {
     logout,
     getUserPublicIMages,
     getUserPrivateImages,
-    filterImageFunction
+    filterImageFunction,
+    getSpecificPersonPublicImages
 }

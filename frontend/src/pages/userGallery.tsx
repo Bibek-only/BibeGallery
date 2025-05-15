@@ -1,78 +1,63 @@
-import { useState, useEffect } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import { getUserById, getUserImages } from "../services/mockData"
-import type { User, Image } from "../services/type"
+import {  useParams } from "react-router-dom"
 import MasonryGrid from "../components/MosonryGrid"
-import ImageModal from "../components/ImageModal"
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import {getSpecificPersonPublicImages} from "../services/export.services"
+import {setSpecificPersonData} from "../store/reducers/image/imageSlice"
+import {setLoadingState} from "../store/reducers/Loader/loadingStatus"
+import Loader from "@/components/Loader"
 
 export default function UserPage() {
   const { userId } = useParams<{ userId: string }>()
-  
-  const [user, setUser] = useState<User | null>(null)
-  const [images, setImages] = useState<Image[]>([])
-  const [selectedImage, setSelectedImage] = useState<Image | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const navigate = useNavigate()
+  const {specificPersonData} = useSelector((state:any)=>state.imageReducer);
+  const {isLoading} = useSelector((state:any)=>state.loadingReducer);
 
-  useEffect(() => {
-    if (userId) {
-      
-      const foundUser = getUserById(Number.parseInt(userId))
-      if (foundUser) {
-        setUser(foundUser)
-        // Get only public images for other users
-        const userImages = getUserImages(Number.parseInt(userId), "PUBLIC")
-        setImages(userImages)
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    (async ()=>{
+      //call the service for geting the userd iamges data
+      if(specificPersonData?.images?.length <=1){
+        dispatch(setLoadingState(true));
+        const res = await getSpecificPersonPublicImages(userId);
+        if(res.success){
+            dispatch(setSpecificPersonData(res.data))
+        }
+        
       }
-    }
-  }, [userId])
+      dispatch(setLoadingState(false));
+    })();
+  },[specificPersonData])
 
-  const handleImageClick = (imageId: string) => {
-    const image = images.find((img) => img.imageId === imageId)
-    if (image) {
-      setSelectedImage(image)
-      setIsModalOpen(true)
-    }
-  }
+  
+  
 
-  const handleUserClick = (userId: number) => {
-    navigate(`/user/${userId}`)
-  }
-
-  if (!user) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <p>User not found</p>
-      </div>
-    )
-  }
-
-  return (
+ return isLoading?(<Loader isLoading={isLoading} message="Loading the person Images"></Loader>):(
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
         <Avatar className="h-24 w-24">
-          <AvatarImage src={user.profileImageUrl || "/placeholder.svg"} alt={user.name} />
+          <AvatarImage src={specificPersonData.profileImageUrl|| "/placeholder.svg"} alt={specificPersonData.name} />
           <AvatarFallback>
-            {user.name
+            {specificPersonData.name
               .split(" ")
               .map((n:any) => n[0])
               .join("")}
           </AvatarFallback>
         </Avatar>
         <div>
-          <h1 className="text-2xl font-bold">{user.name}</h1>
+          <h1 className="text-2xl font-bold">{specificPersonData.name}</h1>
           <p className="mt-2 text-sm">
-            <span className="font-medium">{images.length}</span>{" "}
-            <span className="text-muted-foreground">public {images.length === 1 ? "image" : "images"}</span>
+            <span className="font-medium">{specificPersonData.images.length}</span>{" "}
+            <span className="text-muted-foreground">public {specificPersonData.images.length === 1 ? "image" : "images"}</span>
           </p>
         </div>
       </div>
 
       <div className="mt-8">
         <h2 className="mb-6 text-xl font-semibold">Public Gallery</h2>
-        {images.length > 0 ? (
-          <MasonryGrid images={images} onImageClick={handleImageClick} onUserClick={handleUserClick} />
+        {specificPersonData.images.length > 0 ? (
+          <MasonryGrid images={specificPersonData.images} onImageClick={()=>{}} onUserClick={()=>{}} />
         ) : (
           <div className="flex flex-col items-center justify-center py-12">
             <p className="text-lg text-muted-foreground">This user hasn't shared any public images yet.</p>
@@ -80,7 +65,7 @@ export default function UserPage() {
         )}
       </div>
 
-      <ImageModal image={selectedImage} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      
     </div>
   )
 }
