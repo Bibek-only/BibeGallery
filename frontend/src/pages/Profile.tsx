@@ -12,7 +12,7 @@ import SideBar from "@/components/ProfilePage/SideBar";
 import MasonryGrid from "../components/MosonryGrid";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getUserPrivateImages, getUserPublicIMages } from "../services/export.services";
+import { filterImageFunction, getUserPrivateImages, getUserPublicIMages } from "../services/export.services";
 import {
   setUserPrivateImages,
   setUserPublicImages,
@@ -32,6 +32,15 @@ export default function ProfilePage() {
   const { isLoading } = useSelector((state: any) => state.loadingReducer);
   const dispatch = useDispatch();
 
+  const { searchQuery,tagQuery } = useSelector((state: any) => state.imageReducer);
+  const [publicFilterdImages,setPublicFilteredImages] = useState(userPublicImages);
+  const [privateFilterdImages,setPrivateFilteredImages] = useState(userPrivateImages);
+  useEffect(()=>{
+    const publicFilterImages = filterImageFunction(searchQuery,tagQuery,userPublicImages)
+    setPublicFilteredImages(publicFilterImages)
+    const privateFilteredImages = filterImageFunction(searchQuery,tagQuery,userPrivateImages);
+    setPrivateFilteredImages(privateFilteredImages);
+  },[tagQuery,searchQuery,userPublicImages,userPrivateImages]);
 
 
 
@@ -89,7 +98,7 @@ export default function ProfilePage() {
             <TabsContent value="PUBLIC" className="mt-0">
               {userPublicImages.length > 0 ? (
                 <MasonryGrid
-                  images={userPublicImages}
+                  images={publicFilterdImages}
                   onImageClick={()=>{}}
                   onUserClick={()=>{}}
                 />
@@ -110,7 +119,7 @@ export default function ProfilePage() {
             <TabsContent value="PRIVATE" className="mt-0">
               {userPrivateImages.length > 0 ? (
                 <MasonryGrid
-                  images={userPrivateImages}
+                  images={privateFilterdImages}
                   onImageClick={()=>{}}
                   onUserClick={()=>{}}
                 />

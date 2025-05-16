@@ -2,8 +2,8 @@ import {  useParams } from "react-router-dom"
 import MasonryGrid from "../components/MosonryGrid"
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
-import {getSpecificPersonPublicImages} from "../services/export.services"
+import { useEffect,useState } from "react"
+import {filterImageFunction, getSpecificPersonPublicImages} from "../services/export.services"
 import {setSpecificPersonData} from "../store/reducers/image/imageSlice"
 import {setLoadingState} from "../store/reducers/Loader/loadingStatus"
 import Loader from "@/components/Loader"
@@ -29,8 +29,12 @@ export default function UserPage() {
       dispatch(setLoadingState(false));
     })();
   },[specificPersonData])
-
-  
+  const { searchQuery,tagQuery } = useSelector((state: any) => state.imageReducer);
+  const [images,setImages] = useState(specificPersonData.images);
+  useEffect(()=>{
+    const filterImages = filterImageFunction(searchQuery,tagQuery,specificPersonData.images)
+    setImages(filterImages)
+  },[tagQuery,searchQuery,specificPersonData])
   
 
  return isLoading?(<Loader isLoading={isLoading} message="Loading the person Images"></Loader>):(
@@ -57,7 +61,7 @@ export default function UserPage() {
       <div className="mt-8">
         <h2 className="mb-6 text-xl font-semibold">Public Gallery</h2>
         {specificPersonData.images.length > 0 ? (
-          <MasonryGrid images={specificPersonData.images} onImageClick={()=>{}} onUserClick={()=>{}} />
+          <MasonryGrid images={images} onImageClick={()=>{}} onUserClick={()=>{}} />
         ) : (
           <div className="flex flex-col items-center justify-center py-12">
             <p className="text-lg text-muted-foreground">This user hasn't shared any public images yet.</p>
