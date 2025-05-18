@@ -13,9 +13,7 @@ const getAllUsersForAdmin = async (req: Request | any, res: Response) => {
     });
     if (users) {
       res.status(200).json(
-        new ApiResponse(true, 200, "Sucessfully get all the user", {
-          data: users,
-        }),
+        new ApiResponse(true, 200, "Sucessfully get all the user",users),
       );
       return;
     }
