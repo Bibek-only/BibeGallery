@@ -1,13 +1,25 @@
 import { useSelector } from "react-redux";
 
 const FeturedImages = () => {
-  const {publicImages} = useSelector((state:any)=>state.imageReducer)
-  const images:any = publicImages.slice(0,12);
+  const { publicImages = [] } = useSelector((state: any) => state.imageReducer);
+
+  // Safely handle potential undefined publicImages
+  const hasImages = Array.isArray(publicImages) && publicImages.length > 0;
+  const images = hasImages ? publicImages.slice(0, 12) : [];
+
   return (
     <section className="container mx-auto px-4 py-16">
-        <h2 className="mb-8 text-center text-3xl font-bold">Featured Images</h2>
+      <h2 className="mb-8 text-center text-3xl font-bold">Featured Images</h2>
+
+      {!hasImages ? (
+        <div className="flex justify-center items-center py-10">
+          <p className="text-muted-foreground text-lg">
+            No images available at the moment.
+          </p>
+        </div>
+      ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {images.slice(0, 8).map((image:any) => (
+          {images.slice(0, 8).map((image: any) => (
             <div
               key={image.id}
               className="group relative overflow-hidden rounded-lg"
@@ -22,25 +34,27 @@ const FeturedImages = () => {
               <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">
-                    By {image.user.name}
+                    By {image.user?.name || "Unknown"}
                   </span>
                 </div>
                 <div className="mt-2 flex gap-2">
-                  {image.tags.map((tag: any) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-white/20 px-2 py-1 text-xs"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
+                  {Array.isArray(image.tags) &&
+                    image.tags.map((tag: any) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-white/20 px-2 py-1 text-xs"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
                 </div>
               </div>
             </div>
           ))}
         </div>
-      </section>
-  )
-}
+      )}
+    </section>
+  );
+};
 
-export default FeturedImages
+export default FeturedImages;

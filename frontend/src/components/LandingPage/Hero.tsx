@@ -3,27 +3,37 @@ import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 
 const Hero = () => {
-  
   const { isLogedIn } = useSelector((state: any) => state.authReducer);
-  const {publicImages} = useSelector((state:any)=>state.imageReducer)
-  const images:any = publicImages?.slice(0,12);
+  const { publicImages = [] } = useSelector((state: any) => state.imageReducer);
+
+  // Safely handle potential undefined publicImages
+  const hasImages = Array.isArray(publicImages) && publicImages.length > 0;
+  const images = hasImages ? publicImages.slice(0, 12) : [];
 
   return (
     <section className="relative overflow-hidden py-20 md:py-32">
       <div className="absolute inset-0 z-0 opacity-20">
         <div className="grid grid-cols-3 gap-2 md:grid-cols-4 md:gap-4 lg:grid-cols-6">
-          {images.map((image:any) => (
-            <div
-              key={image.id}
-              className="aspect-square w-full overflow-hidden rounded-lg bg-muted"
-            >
-              <img
-                src={image.imageUrl || "/placeholder.svg"}
-                alt=""
-                className="h-full w-full object-cover"
-              />
-            </div>
-          ))}
+          {hasImages
+            ? images.map((image: any) => (
+                <div
+                  key={image.id}
+                  className="aspect-square w-full overflow-hidden rounded-lg bg-muted"
+                >
+                  <img
+                    src={image.imageUrl || "/placeholder.svg"}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ))
+            : // Add some empty placeholders when no images are available
+              Array.from({ length: 12 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="aspect-square w-full overflow-hidden rounded-lg bg-muted"
+                />
+              ))}
         </div>
       </div>
 
