@@ -18,17 +18,18 @@ export default function UserPage() {
   useEffect(()=>{
     (async ()=>{
       //call the service for geting the userd iamges data
-      if(specificPersonData?.images?.length <=1){
+      
         dispatch(setLoadingState(true));
         const res = await getSpecificPersonPublicImages(userId);
         if(res.success){
             dispatch(setSpecificPersonData(res.data))
         }
         
-      }
+      
       dispatch(setLoadingState(false));
     })();
-  },[specificPersonData])
+  },[])
+
   const { searchQuery,tagQuery } = useSelector((state: any) => state.imageReducer);
   const [images,setImages] = useState(specificPersonData.images);
   useEffect(()=>{

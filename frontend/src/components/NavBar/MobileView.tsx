@@ -23,7 +23,7 @@ const MobileView = () => {
     
       const handleSignOut = () => {
         // In a real app, this would call your auth service's signOut method
-        console.log("Signing out...")
+        
         // Redirect to landing page
         navigate("/")
       }

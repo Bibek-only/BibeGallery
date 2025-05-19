@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import {
   Tabs,
@@ -53,7 +52,7 @@ export default function ProfilePage() {
         if (res.success) {
           //set the data to the store
           dispatch(setUserPublicImages(res.data));
-          console.log("her are the data to store pubic images", res.data);
+          
         }
       }
       //get the private images
@@ -63,7 +62,7 @@ export default function ProfilePage() {
         if (res.success) {
           //set the data to the store
           dispatch(setUserPrivateImages(res.data));
-          console.log("her are the data to store private images", res.data);
+         
         }
       }
 
@@ -74,7 +73,7 @@ export default function ProfilePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Loader isLoading={isLoading} message="Loading the images...."></Loader>
+      <Loader isLoading={isLoading} message=""></Loader>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
         {/* Sidebar */}
         <SideBar></SideBar>

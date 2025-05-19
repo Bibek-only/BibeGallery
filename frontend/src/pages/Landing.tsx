@@ -11,9 +11,10 @@ import Loader from "@/components/Loader";
 export default function LandingPage() {
   //state to set for the loader
   const { isLoading } = useSelector((state: any) => state.loadingReducer);
-  console.log(isLoading)
+  
+  
   return isLoading ? (
-    <Loader isLoading={isLoading} message="Loading....."></Loader>
+    <Loader isLoading={true} message="Loading....."></Loader>
   ) : (
     <div className="flex flex-col gap-16 pb-16">
       {/* Hero Section */}

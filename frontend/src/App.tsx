@@ -15,42 +15,39 @@ const App = () => {
   //get the info in the userInfo store
   const {userInfo} = useSelector((state:any)=> state.userReducer)
   const {publicImages} = useSelector((state:any)=> state.imageReducer)
-
-  //get the auth auth status of the user
-  const {isLogedIn} = useSelector((state:any)=> state.authReducer)
+  const {isLogedIn} = useSelector((state:any)=> state.authReducer);
+  
 
   //check the auth status here
   useEffect(()=>{
-    
     dispatch(setLoadingState(true));
+    
     userAuthStatusCheck()
     .then((data)=>{
-      console.log("her is the data for user check",data);
 
       if(data.success){
         dispatch(setUserAuthStatus(true));
       }
     })
     .catch((err)=>{
-      console.log(err);
+      console.log("Error in catch user auth status check",err);
     })
 
     dispatch(setLoadingState(true))
     userAdminStatusCheck()
     .then((data)=>{
-      console.log("here is the data for admin check",data);
       if(data.success){
         dispatch(setAdminAuthStatus(true));
       }
     })
     .catch((err:any)=>{
-      console.log(err)
+      console.log("Error in user admin statuc check app.tsx",err)
     })
     
     
     //get the user info if ther is nothing
    
-    if(!userInfo.id){
+    if(!userInfo.id || isLogedIn){
       dispatch(setLoadingState(true))
       getUserInof()
       .then((data)=>{
@@ -77,7 +74,7 @@ const App = () => {
       dispatch(setLoadingState(true))
       getAllPublicImages()
       .then((data:any)=>{
-        console.log("pb image",data)
+        
         dispatch(setPublicImages(data.data))
       })
       .catch((error:any)=>{

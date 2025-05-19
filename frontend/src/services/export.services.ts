@@ -8,6 +8,7 @@ import getUserPublicIMages from "./image/getUserPublicImages.service";
 import getUserPrivateImages from "./image/getUserPrivateImages.service"
 import filterImageFunction from "./image/filterImage.service";
 import getSpecificPersonPublicImages from "./image/getSpecificPersonPubilcImages";
+import getAllUsers from "./admin/getAllUsers";
 export {
     userAuthStatusCheck,
     userAdminStatusCheck,
@@ -18,5 +19,6 @@ export {
     getUserPublicIMages,
     getUserPrivateImages,
     filterImageFunction,
-    getSpecificPersonPublicImages
+    getSpecificPersonPublicImages,
+    getAllUsers
 }

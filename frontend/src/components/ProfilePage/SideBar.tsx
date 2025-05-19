@@ -1,4 +1,6 @@
 import { Trash2, Upload } from "lucide-react";
+import { setIsuploadFormOpen } from "../../store/reducers/image/imageSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
   Avatar,
@@ -14,12 +16,12 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog";
 import UploadForm from "../../components/UploadForm";
-import { useSelector } from "react-redux";
 
 const SideBar = () => {
   const { userInfo } = useSelector((state: any) => state.userReducer);
-  console.log(userInfo);
-  const { id, name, email, profileImageUrl,imageCount } = userInfo;
+  const {  name, email, profileImageUrl, imageCount } = userInfo;
+  const { isUploadFormOpen } = useSelector((state: any) => state.imageReducer);
+  const dispatch = useDispatch();
 
   return (
     <div className="md:col-span-1">
@@ -33,7 +35,7 @@ const SideBar = () => {
             <AvatarFallback>
               {name
                 .split(" ")
-                .map((n:any) => n[0])
+                .map((n: any) => n[0])
                 .join("")}
             </AvatarFallback>
           </Avatar>
@@ -51,9 +53,19 @@ const SideBar = () => {
         </div>
 
         <div className="space-y-4">
-          <Dialog open={false} onOpenChange={() => {}}>
+          <Dialog
+            open={isUploadFormOpen}
+            onOpenChange={(isOpen) => {
+              dispatch(setIsuploadFormOpen(isOpen));
+            }}
+          >
             <DialogTrigger asChild>
-              <Button className="w-full gap-2">
+              <Button
+                className="w-full gap-2"
+                onClick={() => {
+                  dispatch(setIsuploadFormOpen(true));
+                }}
+              >
                 <Upload className="h-4 w-4" />
                 Upload Image
               </Button>
@@ -62,7 +74,7 @@ const SideBar = () => {
               <DialogHeader>
                 <DialogTitle>Upload a new image</DialogTitle>
               </DialogHeader>
-              <UploadForm onSuccess={() => {}} />
+              <UploadForm />
             </DialogContent>
           </Dialog>
 

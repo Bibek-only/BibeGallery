@@ -1,48 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 interface ImageState {
   publicImages: any;
   specificPersonData: any;
   searchQuery: string;
   tagQuery: string[];
+  isUploadFormOpen:boolean;
 }
 
 const initialState: ImageState = {
-  publicImages: [
-    {
-      id: 9,
-      imageUrl:
-        "https://ik.imagekit.io/Bibekabcsik09/bibe-gallery/hotel_C8bTMvrymq.jpg",
-      tags: ["tag"],
-      userId: 12,
-      user: {
-        name: "Bibek samal",
-      },
-    },
-  ],
+  publicImages: [],
   specificPersonData:{
     name:"",
     profileImageUrl:"",
-    images:[
-      {
-        id: 0,
-        imageUrl: "",
-        tags: ["tag"],
-        userId: 0,
-        user: {
-          name: "",
-        },
-      },
-    ],
+    images:[],
   },
   searchQuery: "",
   tagQuery: [],
+  isUploadFormOpen:false
 };
 
 const imageSlice = createSlice({
   name: "imageSlice",
   initialState,
   reducers: {
+    setIsuploadFormOpen: (state,action)=>{
+      state.isUploadFormOpen =  action.payload
+    },
     setPublicImages: (state, action) => {
       state.publicImages = action.payload;
     },
@@ -83,7 +68,8 @@ export const {
   addTagToQuery,
   removeTagFromQuery,
   toggleTagInQuery,
-  setSpecificPersonData
+  setSpecificPersonData,
+  setIsuploadFormOpen
 } = imageSlice.actions;
 
 export default imageSlice.reducer;

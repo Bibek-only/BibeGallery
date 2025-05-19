@@ -6,7 +6,7 @@ const Hero = () => {
   
   const { isLogedIn } = useSelector((state: any) => state.authReducer);
   const {publicImages} = useSelector((state:any)=>state.imageReducer)
-  const images:any = publicImages.slice(0,12);
+  const images:any = publicImages?.slice(0,12);
 
   return (
     <section className="relative overflow-hidden py-20 md:py-32">

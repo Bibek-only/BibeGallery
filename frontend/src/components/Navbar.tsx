@@ -1,6 +1,6 @@
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import MobileView from "./NavBar/MobileView";
 import PcView from "./NavBar/PcView";
 import TagFilter from "./TagFilter";
@@ -15,7 +15,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const location = useLocation();
-  const navigate = useNavigate();
+  
   const isLandingPage = location.pathname === "/";
   const showSearch = !isLandingPage;
 
@@ -38,12 +38,7 @@ export default function Navbar() {
     dispatch(toggleTagInQuery(tag));
   };
 
-  const handleSignOut = () => {
-    // In a real app, this would call your auth service's signOut method
-    console.log("Signing out...");
-    // Redirect to landing page
-    navigate("/");
-  };
+  
 
   return (
     <header

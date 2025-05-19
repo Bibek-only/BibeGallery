@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import { Github, Linkedin, Globe } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -12,23 +13,44 @@ export default function Footer() {
             A simple image upload and user-specific image gallery
           </p>
         </div>
-        <div className="flex gap-6">
-          <Link to="/home" className="text-sm text-muted-foreground hover:text-foreground">
-            Gallery
-          </Link>
-          <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground">
-            About
-          </Link>
-          <Link to="/terms" className="text-sm text-muted-foreground hover:text-foreground">
-            Terms
-          </Link>
-          <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
-            Privacy
-          </Link>
+
+        <div className="flex items-center gap-3">
+          <p className="text-sm font-medium">Developed By: Bibek samal</p>
+          <div className="flex gap-3">
+            <a
+              href="https://github.com/Bibek-only"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Github size={20} />
+              <span className="sr-only">GitHub</span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/bibek-samal/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Linkedin size={20} />
+              <span className="sr-only">LinkedIn</span>
+            </a>
+            <a
+              href="https://bibeksamal.me"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Globe size={20} />
+              <span className="sr-only">Portfolio</span>
+            </a>
+          </div>
         </div>
-        <div className="text-sm text-muted-foreground">© {new Date().getFullYear()} BiBe Gallery</div>
+
+        <div className="text-sm text-muted-foreground">
+          © {new Date().getFullYear()} BiBe Gallery
+        </div>
       </div>
     </footer>
-  )
+  );
 }
-
