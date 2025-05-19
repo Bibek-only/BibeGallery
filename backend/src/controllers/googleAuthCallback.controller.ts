@@ -23,7 +23,7 @@ const googleAuthCallback = (req: any, res: any) => {
     path: "/",
   });
 
-  res.redirect(`${process.env.FRONTEND_URL}/home`); //after successfyll setthe cookie send the user to frontend url
+  res.redirect(`${process.env.FRONTEND_URL_PROD}/home`); //after successfyll setthe cookie send the user to frontend url
 };
 
 export default googleAuthCallback;
