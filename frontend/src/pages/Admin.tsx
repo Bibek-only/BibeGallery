@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import type { User} from "../services/type";
+import type { User } from "../services/type";
 import MasonryGrid from "../components/MosonryGrid";
 import {
   getAllUsers,
@@ -14,9 +14,10 @@ import { setSpecificPersonData } from "@/store/reducers/image/imageSlice";
 
 export default function AdminPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  
 
-  const {specificPersonData} = useSelector((state:any)=>state.imageReducer);
+  const { specificPersonData } = useSelector(
+    (state: any) => state.imageReducer
+  );
 
   const { allUsers } = useSelector((state: any) => state.userReducer);
   const { isLoading } = useSelector((state: any) => state.loadingReducer);
@@ -24,15 +25,14 @@ export default function AdminPage() {
 
   async function getUserImages(userId: any) {
     const res = await getSpecificPersonPublicImages(userId);
-    
+
     if (res.success) {
       dispatch(setSpecificPersonData(res.data));
     }
   }
 
   useEffect(() => {
-  getUserImages(selectedUser?.id)
-
+    getUserImages(selectedUser?.id);
   }, [selectedUser]);
 
   const handleUserSelect = (user: User) => {
@@ -68,7 +68,7 @@ export default function AdminPage() {
             <h2 className="mb-4 text-xl font-semibold">Users</h2>
 
             <div className="space-y-4">
-              {allUsers.length > 0 ? (
+              {Array.isArray(allUsers) && allUsers.length > 0 ? (
                 allUsers.map((user: any) => (
                   <div
                     key={user.id}
@@ -86,9 +86,11 @@ export default function AdminPage() {
                       />
                       <AvatarFallback>
                         {user.name
-                          .split(" ")
-                          .map((n: any) => n[0])
-                          .join("")}
+                          ? user.name
+                              .split(" ")
+                              .map((n: any) => n[0])
+                              .join("")
+                          : "U"}
                       </AvatarFallback>
                     </Avatar>
                     <div>
@@ -121,9 +123,11 @@ export default function AdminPage() {
                     />
                     <AvatarFallback>
                       {selectedUser.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
+                        ? selectedUser.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                        : "U"}
                     </AvatarFallback>
                   </Avatar>
                   <div>
@@ -131,13 +135,17 @@ export default function AdminPage() {
                       {selectedUser.name}'s Images
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                      {specificPersonData.images.length} total images
+                      {specificPersonData?.images?.length || 0} total images
                     </p>
                   </div>
                 </div>
 
-                {specificPersonData.images.length > 0 ? (
-                  <MasonryGrid images={specificPersonData.images} onImageClick={() => {}} />
+                {specificPersonData?.images &&
+                specificPersonData.images.length > 0 ? (
+                  <MasonryGrid
+                    images={specificPersonData.images}
+                    onImageClick={() => {}}
+                  />
                 ) : (
                   <div className="flex flex-col items-center justify-center rounded-lg border py-12">
                     <p className="text-lg text-muted-foreground">

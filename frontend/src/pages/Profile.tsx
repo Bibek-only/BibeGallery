@@ -11,37 +11,52 @@ import SideBar from "@/components/ProfilePage/SideBar";
 import MasonryGrid from "../components/MosonryGrid";
 
 import { useDispatch, useSelector } from "react-redux";
-import { filterImageFunction, getUserPrivateImages, getUserPublicIMages } from "../services/export.services";
+import {
+  filterImageFunction,
+  getUserPrivateImages,
+  getUserPublicIMages,
+} from "../services/export.services";
 import {
   setUserPrivateImages,
   setUserPublicImages,
 } from "../store/reducers/user/userSlice";
-import {
- setLoadingState
-} from "../store/reducers/Loader/loadingStatus";
+import { setLoadingState } from "../store/reducers/Loader/loadingStatus";
 import Loader from "@/components/Loader";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<"PUBLIC" | "PRIVATE">("PUBLIC");
 
-  
-  const { userPublicImages, userPrivateImages } = useSelector(
+  const { userPublicImages = [], userPrivateImages = [] } = useSelector(
     (state: any) => state.userReducer
   );
   const { isLoading } = useSelector((state: any) => state.loadingReducer);
   const dispatch = useDispatch();
 
-  const { searchQuery,tagQuery } = useSelector((state: any) => state.imageReducer);
-  const [publicFilterdImages,setPublicFilteredImages] = useState(userPublicImages);
-  const [privateFilterdImages,setPrivateFilteredImages] = useState(userPrivateImages);
-  useEffect(()=>{
-    const publicFilterImages = filterImageFunction(searchQuery,tagQuery,userPublicImages)
-    setPublicFilteredImages(publicFilterImages)
-    const privateFilteredImages = filterImageFunction(searchQuery,tagQuery,userPrivateImages);
-    setPrivateFilteredImages(privateFilteredImages);
-  },[tagQuery,searchQuery,userPublicImages,userPrivateImages]);
-
-
+  const { searchQuery, tagQuery } = useSelector(
+    (state: any) => state.imageReducer
+  );
+  const [publicFilterdImages, setPublicFilteredImages] =
+    useState(userPublicImages);
+  const [privateFilterdImages, setPrivateFilteredImages] =
+    useState(userPrivateImages);
+  useEffect(() => {
+    if (Array.isArray(userPublicImages)) {
+      const publicFilterImages = filterImageFunction(
+        searchQuery,
+        tagQuery,
+        userPublicImages
+      );
+      setPublicFilteredImages(publicFilterImages);
+    }
+    if (Array.isArray(userPrivateImages)) {
+      const privateFilteredImages = filterImageFunction(
+        searchQuery,
+        tagQuery,
+        userPrivateImages
+      );
+      setPrivateFilteredImages(privateFilteredImages);
+    }
+  }, [tagQuery, searchQuery, userPublicImages, userPrivateImages]);
 
   useEffect(() => {
     //get the public images
@@ -52,22 +67,19 @@ export default function ProfilePage() {
         if (res.success) {
           //set the data to the store
           dispatch(setUserPublicImages(res.data));
-          
         }
       }
       //get the private images
-      if(userPrivateImages.length == 0){
+      if (userPrivateImages.length == 0) {
         dispatch(setLoadingState(true));
         const res = await getUserPrivateImages();
         if (res.success) {
           //set the data to the store
           dispatch(setUserPrivateImages(res.data));
-         
         }
       }
 
-      dispatch(setLoadingState(false))
-
+      dispatch(setLoadingState(false));
     })();
   }, []);
 
@@ -95,20 +107,23 @@ export default function ProfilePage() {
             </TabsList>
 
             <TabsContent value="PUBLIC" className="mt-0">
-              {userPublicImages.length > 0 ? (
+              {Array.isArray(userPublicImages) &&
+              userPublicImages.length > 0 ? (
                 <MasonryGrid
-                  images={publicFilterdImages}
-                  onImageClick={()=>{}}
-                  onUserClick={()=>{}}
+                  images={publicFilterdImages || []}
+                  onImageClick={() => {}}
+                  onUserClick={() => {}}
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center py-12">
                   <p className="mb-4 text-lg text-muted-foreground">
                     You don't have any public images yet.
                   </p>
-                  <Button onClick={()=>{
-                    //opent the upload form here
-                  }}>
+                  <Button
+                    onClick={() => {
+                      //open the upload form here
+                    }}
+                  >
                     Upload Your First Image
                   </Button>
                 </div>
@@ -116,20 +131,23 @@ export default function ProfilePage() {
             </TabsContent>
 
             <TabsContent value="PRIVATE" className="mt-0">
-              {userPrivateImages.length > 0 ? (
+              {Array.isArray(userPrivateImages) &&
+              userPrivateImages.length > 0 ? (
                 <MasonryGrid
-                  images={privateFilterdImages}
-                  onImageClick={()=>{}}
-                  onUserClick={()=>{}}
+                  images={privateFilterdImages || []}
+                  onImageClick={() => {}}
+                  onUserClick={() => {}}
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center py-12">
                   <p className="mb-4 text-lg text-muted-foreground">
                     You don't have any private images yet.
                   </p>
-                  <Button onClick={() =>{
-                    // open the upload form
-                  }}>
+                  <Button
+                    onClick={() => {
+                      // open the upload form
+                    }}
+                  >
                     Upload Your First Image
                   </Button>
                 </div>
@@ -138,8 +156,6 @@ export default function ProfilePage() {
           </Tabs>
         </div>
       </div>
-
-      
     </div>
   );
 }
