@@ -7,7 +7,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECREATE!,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL!, // this callback url is the exact url given in the google console it need to hited after successful loging
+      callbackURL: process.env.GOOGLE_CALLBACK_URL_PROD!, // this callback url is the exact url given in the google console it need to hited after successful loging
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
